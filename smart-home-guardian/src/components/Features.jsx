@@ -1,10 +1,10 @@
 const features = [
-  { icon: '🚪', title: 'Portas e Janelas', desc: 'Sensores que detectam aberturas e fechamentos em tempo real. Saiba imediatamente se algo foi aberto quando não deveria.' },
-  { icon: '📡', title: 'Detecção de Movimento', desc: 'Sensores de presença com tecnologia infravermelha que identificam movimento em qualquer ambiente da casa.' },
-  { icon: '💨', title: 'Detector de Fumaça', desc: 'Monitoramento contínuo de níveis de fumaça no ar, com alertas imediatos ao detectar níveis perigosos.' },
-  { icon: '🔥', title: 'Alerta de Incêndio', desc: 'Sensor de temperatura que identifica aumentos anormais, ativando protocolo de emergência automaticamente.' },
-  { icon: '🔔', title: 'Notificações Instantâneas', desc: 'Receba alertas em tempo real no seu celular, tablet ou computador. Nunca mais seja pego de surpresa.' },
-  { icon: '📊', title: 'Relatórios e Histórico', desc: 'Acompanhe todo o histórico de eventos, gere relatórios detalhados e analise padrões de segurança.' },
+  { icon: '', title: 'Portas e Janelas', desc: 'Sensores que detectam aberturas e fechamentos em tempo real. Saiba imediatamente se algo foi aberto quando não deveria.' },
+  { icon: '', title: 'Detecção de Movimento', desc: 'Sensores de presença com tecnologia infravermelha que identificam movimento em qualquer ambiente da casa.' },
+  { icon: '', title: 'Detector de Fumaça', desc: 'Monitoramento contínuo de níveis de fumaça no ar, com alertas imediatos ao detectar níveis perigosos.' },
+  { icon: '', title: 'Alerta de Incêndio', desc: 'Sensor de temperatura que identifica aumentos anormais, ativando protocolo de emergência automaticamente.' },
+  { icon: '', title: 'Notificações Instantâneas', desc: 'Receba alertas em tempo real no seu celular, tablet ou computador. Nunca mais seja pego de surpresa.' },
+  { icon: '', title: 'Relatórios e Histórico', desc: 'Acompanhe todo o histórico de eventos, gere relatórios detalhados e analise padrões de segurança.' },
 ]
 
 export default function Features() {

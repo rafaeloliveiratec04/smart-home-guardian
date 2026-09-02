@@ -11,7 +11,7 @@ export default function Hero() {
           <h1>Proteja sua casa com <span className="gradient-text">inteligência</span> que nunca dorme</h1>
           <p>Receba alertas em tempo real sobre portas abertas, movimento detectado, fumaça e risco de incêndio. Tudo em um só lugar, com tecnologia de ponta.</p>
           <div className="hero-buttons">
-            <a href="#pricing" className="btn-primary">🚀 Começar Agora</a>
+            <a href="#pricing" className="btn-primary"> Começar Agora</a>
             <a href="#how" className="btn-secondary">▶ Ver Como Funciona</a>
           </div>
           <div className="hero-stats">

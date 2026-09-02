@@ -1,0 +1,12 @@
+[33m9f3ddf1[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mmaster[m[33m)[m docs: adiciona README site/app de monitoramento residencial
+[33mc9dd059[m feat: adiciona logo do Smart Home Guardian e estilos responsivos
+[33m7c11ff3[m feat: adiciona seção CTA e Footer com links de navegação
+[33m2964d0e[m feat: adiciona seção de planos e preços
+[33mf0d5ce5[m feat: adiciona dashboard simulado com log de eventos dinâmico
+[33mb1bf5f2[m feat: adiciona seção 'Como Funciona' com steps numerados
+[33m707b100[m feat: adiciona seção de funcionalidades com cards interativos
+[33m058d9f9[m feat: adiciona seção Hero com logo e animações orbitais
+[33md34a015[m feat: adiciona componente Navbar com menu responsivo
+[33m11d6b69[m feat: adiciona componente App com estrutura de seções
+[33m52cf871[m feat: adiciona estilos globais e ponto de entrada da aplicação
+[33m9826ddf[m feat: setup inicial do projeto com Vite + React

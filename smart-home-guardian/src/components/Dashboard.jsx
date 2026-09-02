@@ -18,10 +18,10 @@ const newEvents = [
 ]
 
 const sensors = [
-  { icon: '🚪', value: '8', label: 'Portas Monitoradas', status: 'ok', statusText: '✓ Todas fechadas' },
-  { icon: '📡', value: '5', label: 'Sensores de Movimento', status: 'ok', statusText: '✓ Sem atividade' },
-  { icon: '💨', value: '3', label: 'Detectores de Fumaça', status: 'ok', statusText: '✓ Níveis normais' },
-  { icon: '🔥', value: '24°C', label: 'Temp. Ambiente', status: 'ok', statusText: '✓ Dentro do limite' },
+  { icon: '', value: '8', label: 'Portas Monitoradas', status: 'ok', statusText: '✓ Todas fechadas' },
+  { icon: '', value: '5', label: 'Sensores de Movimento', status: 'ok', statusText: '✓ Sem atividade' },
+  { icon: '', value: '3', label: 'Detectores de Fumaça', status: 'ok', statusText: '✓ Níveis normais' },
+  { icon: '', value: '24°C', label: 'Temp. Ambiente', status: 'ok', statusText: '✓ Dentro do limite' },
 ]
 
 const sidebarItems = [
