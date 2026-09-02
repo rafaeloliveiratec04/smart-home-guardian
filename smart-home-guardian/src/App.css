@@ -628,3 +628,72 @@ section {
 .log-time { color: var(--cinza-claro); font-size: 0.78rem; min-width: 60px; }
 .log-icon { font-size: 1rem; }
 .log-text { color: var(--cinza-claro); flex: 1; }
+
+
+/* ===== PRICING ===== */
+.pricing { background: var(--azul-escuro); }
+
+.pricing-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 2rem;
+  max-width: 1100px;
+  margin: 0 auto;
+}
+
+.price-card {
+  background: linear-gradient(145deg, rgba(26, 58, 92, 0.5), rgba(16, 42, 67, 0.5));
+  border: 1px solid rgba(0, 212, 255, 0.1);
+  border-radius: 24px;
+  padding: 2.5rem 2rem;
+  text-align: center;
+  transition: all 0.4s ease;
+  position: relative;
+}
+
+.price-card.featured {
+  border-color: var(--ciano);
+  box-shadow: var(--sombra);
+  transform: scale(1.05);
+}
+
+.price-card.featured::before {
+  content: 'MAIS POPULAR';
+  position: absolute;
+  top: -12px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: var(--gradiente);
+  color: var(--azul-escuro);
+  font-size: 0.75rem;
+  font-weight: 800;
+  padding: 0.3rem 1rem;
+  border-radius: 50px;
+}
+
+.price-card:hover {
+  transform: translateY(-5px);
+  border-color: rgba(0, 212, 255, 0.3);
+}
+
+.price-card.featured:hover { transform: scale(1.05) translateY(-5px); }
+
+.price-card h3 { font-size: 1.3rem; margin-bottom: 0.5rem; }
+.price-card .desc { color: var(--cinza-claro); font-size: 0.9rem; margin-bottom: 1.5rem; }
+
+.price { font-size: 3rem; font-weight: 800; margin-bottom: 0.3rem; }
+.price .currency { font-size: 1.2rem; vertical-align: top; }
+.price .period { font-size: 1rem; color: var(--cinza-claro); font-weight: 400; }
+
+.price-card ul { list-style: none; text-align: left; margin: 1.5rem 0; }
+.price-card ul li {
+  padding: 0.5rem 0;
+  color: var(--cinza-claro);
+  font-size: 0.92rem;
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+}
+
+.price-card ul li::before { content: '✓'; color: var(--ciano); font-weight: 800; }
+.price-card .btn-primary { width: 100%; justify-content: center; }
