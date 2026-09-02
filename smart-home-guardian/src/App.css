@@ -445,3 +445,54 @@ section {
 
 .feature-card h3 { font-size: 1.25rem; font-weight: 700; margin-bottom: 0.6rem; }
 .feature-card p { color: var(--cinza-claro); font-size: 0.95rem; }
+
+
+/* ===== HOW IT WORKS ===== */
+.how-it-works { background: var(--azul-escuro); }
+
+.steps {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 2rem;
+  max-width: 1100px;
+  margin: 0 auto;
+}
+
+.step {
+  flex: 1;
+  min-width: 250px;
+  max-width: 320px;
+  text-align: center;
+  position: relative;
+}
+
+.step-number {
+  width: 70px;
+  height: 70px;
+  margin: 0 auto 1.5rem;
+  border-radius: 50%;
+  background: var(--gradiente);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.5rem;
+  font-weight: 800;
+  color: var(--azul-escuro);
+  box-shadow: 0 10px 30px rgba(0, 212, 255, 0.25);
+}
+
+.step h3 { font-size: 1.2rem; margin-bottom: 0.5rem; }
+.step p { color: var(--cinza-claro); font-size: 0.95rem; }
+
+.step:not(:last-child)::after {
+  content: '→';
+  position: absolute;
+  top: 35px;
+  right: -1.5rem;
+  font-size: 1.5rem;
+  color: rgba(0, 212, 255, 0.3);
+}
+
+
+
