@@ -1,36 +1,40 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { FaCheckCircle, FaTimes, FaCreditCard, FaUser, FaEnvelope, FaLock } from 'react-icons/fa'
 
-const plans = [
-  {
-    name: 'Starter', desc: 'Ideal para apartamentos e casas pequenas',
-    price: '0', period: '/mês', featured: false,
-    features: ['Até 4 sensores', '1 ambiente monitorado', 'Notificações por e-mail', 'Histórico de 7 dias', 'Suporte por chat'],
-    btn: 'Começar Grátis',
-  },
-  {
-    name: 'Guardian Pro', desc: 'Para casas de médio e grande porte',
-    price: '49', period: '/mês', featured: true,
-    features: ['Sensores ilimitados', 'Ambientes ilimitados', 'Notificações em tempo real', 'Histórico de 90 dias', 'Relatórios personalizados', 'Suporte prioritário 24/7'],
-    btn: 'Assinar Agora',
-  },
-  {
-    name: 'Enterprise', desc: 'Para condomínios e empresas',
-    price: '199', period: '/mês', featured: false,
-    features: ['Tudo do plano Pro', 'Múltiplas residências', 'API de integração', 'Histórico ilimitado', 'Gestor de conta dedicado', 'SLA garantido'],
-    btn: 'Falar com Vendas',
-  },
-]
-
 export default function Pricing() {
+  const [plans, setPlans] = useState([])
   const [selectedPlan, setSelectedPlan] = useState(null)
   const [form, setForm] = useState({ name: '', email: '', card: '', expiry: '', cvv: '' })
   const [step, setStep] = useState('form')
   const [loading, setLoading] = useState(false)
+  const [error, setError] = useState('')
+
+  useEffect(() => {
+    fetch('http://localhost:3001/api/plans')
+      .then(res => res.json())
+      .then(data => {
+        const formatted = data.map(p => ({
+          ...p,
+          features: p.features || [],
+          featured: p.name === 'Profissional',
+          btn: p.price === 0 ? 'Começar Grátis' : 'Assinar Agora',
+        }))
+        setPlans(formatted)
+      })
+      .catch(err => {
+        console.error('Erro ao buscar planos:', err)
+        setPlans([
+          { id: 1, name: 'Essencial', desc: 'Monitoramento básico', price: 29.90, period: '/mês', featured: false, features: ['8 sensores de porta', 'Notificações em tempo real', 'Painel de controle'], btn: 'Assinar Agora' },
+          { id: 2, name: 'Profissional', desc: 'Proteção completa', price: 59.90, period: '/mês', featured: true, features: ['Tudo do Essencial', 'Câmeras de segurança', 'Detecção de movimento', 'Histórico de eventos'], btn: 'Assinar Agora' },
+          { id: 3, name: 'Premium', desc: 'Monitoramento 24/7', price: 99.90, period: '/mês', featured: false, features: ['Tudo do Profissional', 'Monitoramento 24/7', 'Suporte prioritário', 'Instalação inclusa'], btn: 'Assinar Agora' },
+        ])
+      })
+  }, [])
 
   const handleOpen = (plan) => {
     setSelectedPlan(plan)
     setStep('form')
+    setError('')
     setForm({ name: '', email: '', card: '', expiry: '', cvv: '' })
   }
 
@@ -52,13 +56,35 @@ export default function Pricing() {
     setForm({ ...form, [name]: value })
   }
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault()
     setLoading(true)
-    setTimeout(() => {
+    setError('')
+
+    try {
+      const response = await fetch('http://localhost:3001/api/purchases', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          name: form.name,
+          email: form.email,
+          planId: selectedPlan.id,
+          paymentMethod: 'credit_card',
+        }),
+      })
+
+      const data = await response.json()
+
+      if (!response.ok) {
+        throw new Error(data.error || 'Erro ao processar compra')
+      }
+
       setLoading(false)
       setStep('success')
-    }, 2000)
+    } catch (err) {
+      setLoading(false)
+      setError(err.message)
+    }
   }
 
   const isValid = form.name.trim() && form.email.trim() && form.card.length >= 16 && form.expiry.length === 5 && form.cvv.length >= 3
@@ -159,6 +185,7 @@ export default function Pricing() {
                       />
                     </div>
                   </div>
+                  {error && <p className="form-error">{error}</p>}
                   <button
                     type="submit"
                     className={`btn-primary checkout-btn ${loading || !isValid ? 'disabled' : ''}`}

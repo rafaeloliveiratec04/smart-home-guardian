@@ -25,3 +25,10 @@ dist-ssr
 
 echo "node_modules" > .gitignore
 echo "dist" >> .gitignore
+
+
+node_modules/
+.env
+database.json
+dist/
+*.log

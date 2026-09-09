@@ -1,0 +1,89 @@
+{
+  "users": [
+    {
+      "id": 1,
+      "name": "Rafael Oliveira",
+      "email": "ro708525@gmail.com",
+      "created_at": "2026-09-09T19:04:34.155Z"
+    }
+  ],
+  "plans": [
+    {
+      "id": 1,
+      "name": "Essencial",
+      "price": 29.9,
+      "period": "/mês",
+      "description": "Monitoramento básico para sua casa",
+      "features": "8 sensores de porta,Notificações em tempo real,Painel de controle",
+      "created_at": "2026-09-09T17:49:59.641Z"
+    },
+    {
+      "id": 2,
+      "name": "Profissional",
+      "price": 59.9,
+      "period": "/mês",
+      "description": "Proteção completa com câmeras e alertas",
+      "features": "Tudo do Essencial,Câmeras de segurança,Detecção de movimento,Histórico de eventos",
+      "created_at": "2026-09-09T17:49:59.642Z"
+    },
+    {
+      "id": 3,
+      "name": "Premium",
+      "price": 99.9,
+      "period": "/mês",
+      "description": "Monitoramento 24/7 com suporte prioritário",
+      "features": "Tudo do Profissional,Monitoramento 24/7,Suporte prioritário,Instalação inclusa",
+      "created_at": "2026-09-09T17:49:59.642Z"
+    }
+  ],
+  "purchases": [
+    {
+      "id": 1,
+      "user_id": 1,
+      "plan_id": 2,
+      "amount": 59.9,
+      "status": "paid",
+      "payment_method": "credit_card",
+      "created_at": "2026-09-09T19:04:34.158Z"
+    },
+    {
+      "id": 2,
+      "user_id": 1,
+      "plan_id": 2,
+      "amount": 59.9,
+      "status": "paid",
+      "payment_method": "credit_card",
+      "created_at": "2026-09-09T19:32:02.938Z"
+    },
+    {
+      "id": 3,
+      "user_id": 1,
+      "plan_id": 2,
+      "amount": 59.9,
+      "status": "paid",
+      "payment_method": "credit_card",
+      "created_at": "2026-09-09T19:36:38.017Z"
+    },
+    {
+      "id": 4,
+      "user_id": 1,
+      "plan_id": 2,
+      "amount": 59.9,
+      "status": "paid",
+      "payment_method": "credit_card",
+      "created_at": "2026-09-09T19:39:51.636Z"
+    },
+    {
+      "id": 5,
+      "user_id": 1,
+      "plan_id": 2,
+      "amount": 59.9,
+      "status": "paid",
+      "payment_method": "credit_card",
+      "created_at": "2026-09-09T19:43:58.048Z"
+    }
+  ],
+  "nextUserId": 2,
+  "nextPlanId": 4,
+  "nextPurchaseId": 6
+}
