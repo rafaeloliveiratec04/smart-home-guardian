@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # Logs
 logs
 *.log
@@ -32,3 +33,24 @@ node_modules/
 database.json
 dist/
 *.log
+=======
+# Dependências
+node_modules/
+
+# Ambiente
+.env
+backend/database.json
+
+# Build
+dist/
+dist-ssr/
+*.local
+
+# Logs
+*.log
+
+# Editor
+.vscode/
+.idea/
+.DS_Store
+>>>>>>> c806795 (Projeto Smart Home Guardian completo: frontend React + backend Node com API, checkout e envio de email, corrigido)

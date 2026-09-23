@@ -18,9 +18,9 @@ if (existsSync(DB_FILE)) {
 // Seed de planos
 if (data.plans.length === 0) {
   data.plans = [
-    { id: 1, name: "Essencial", price: 29.90, period: "/mês", description: "Monitoramento básico para sua casa", features: "8 sensores de porta,Notificações em tempo real,Painel de controle", created_at: new Date().toISOString() },
-    { id: 2, name: "Profissional", price: 59.90, period: "/mês", description: "Proteção completa com câmeras e alertas", features: "Tudo do Essencial,Câmeras de segurança,Detecção de movimento,Histórico de eventos", created_at: new Date().toISOString() },
-    { id: 3, name: "Premium", price: 99.90, period: "/mês", description: "Monitoramento 24/7 com suporte prioritário", features: "Tudo do Profissional,Monitoramento 24/7,Suporte prioritário,Instalação inclusa", created_at: new Date().toISOString() },
+    { id: 1, name: "Guardian Basic", price: 0, period: "", description: "Proteção essencial para começar", features: "Monitoramento em tempo real,Alertas push,Histórico de 24h", created_at: new Date().toISOString() },
+    { id: 2, name: "Guardian Plus", price: 59.90, period: "/mês", description: "Mais inteligência e autonomia para sua casa", features: "Histórico de 30 dias,Relatórios em PDF,Integração com Alexa/Google Home,Automação que espanta invasores", created_at: new Date().toISOString() },
+    { id: 3, name: "Guardian Max", price: 99.90, period: "/mês", description: "Proteção avançada", features: "Ligações e SMS de emergência (até 3 contatos mesmo no modo Não Perturbe),Vizinho Protetor: alerta um vizinho de confiança sem resposta em 3 min,Histórico vitalício", created_at: new Date().toISOString() },
   ]
   data.nextPlanId = 4
   save()

@@ -16,7 +16,7 @@ export default function Pricing() {
         const formatted = data.map(p => ({
           ...p,
           features: p.features || [],
-          featured: p.name === 'Profissional',
+          featured: p.id === 2,
           btn: p.price === 0 ? 'Começar Grátis' : 'Assinar Agora',
         }))
         setPlans(formatted)
@@ -24,9 +24,9 @@ export default function Pricing() {
       .catch(err => {
         console.error('Erro ao buscar planos:', err)
         setPlans([
-          { id: 1, name: 'Essencial', desc: 'Monitoramento básico', price: 29.90, period: '/mês', featured: false, features: ['8 sensores de porta', 'Notificações em tempo real', 'Painel de controle'], btn: 'Assinar Agora' },
-          { id: 2, name: 'Profissional', desc: 'Proteção completa', price: 59.90, period: '/mês', featured: true, features: ['Tudo do Essencial', 'Câmeras de segurança', 'Detecção de movimento', 'Histórico de eventos'], btn: 'Assinar Agora' },
-          { id: 3, name: 'Premium', desc: 'Monitoramento 24/7', price: 99.90, period: '/mês', featured: false, features: ['Tudo do Profissional', 'Monitoramento 24/7', 'Suporte prioritário', 'Instalação inclusa'], btn: 'Assinar Agora' },
+          { id: 1, name: 'Guardian Basic', desc: 'Proteção essencial para começar', price: 0, period: '', featured: false, features: ['Monitoramento em tempo real', 'Alertas push', 'Histórico de 24h'], btn: 'Começar Grátis' },
+          { id: 2, name: 'Guardian Plus', desc: 'Mais inteligência e autonomia para sua casa', price: 59.90, period: '/mês', featured: true, features: ['Histórico de 30 dias', 'Relatórios em PDF', 'Integração com Alexa/Google Home', 'Automação que espanta invasores'], btn: 'Assinar Agora' },
+          { id: 3, name: 'Guardian Max', desc: 'Proteção avançada', price: 99.90, period: '/mês', featured: false, features: ['Ligações e SMS de emergência (até 3 contatos mesmo no modo Não Perturbe)', 'Vizinho Protetor: alerta um vizinho de confiança sem resposta em 3 min', 'Histórico vitalício'], btn: 'Assinar Agora' },
         ])
       })
   }, [])
@@ -87,7 +87,8 @@ export default function Pricing() {
     }
   }
 
-  const isValid = form.name.trim() && form.email.trim() && form.card.length >= 16 && form.expiry.length === 5 && form.cvv.length >= 3
+  const isFree = selectedPlan && selectedPlan.price === 0
+  const isValid = form.name.trim() && form.email.trim() && (isFree || (form.card.length >= 16 && form.expiry.length === 5 && form.cvv.length >= 3))
 
   return (
     <section className="pricing" id="pricing">
@@ -99,10 +100,17 @@ export default function Pricing() {
       <div className="pricing-grid">
         {plans.map((p, i) => (
           <div className={`price-card ${p.featured ? 'featured' : ''} fade-up visible`} key={i}>
+            {p.featured && <div className="popular-badge">MAIS POPULAR</div>}
             <h3>{p.name}</h3>
             <p className="desc">{p.desc}</p>
             <div className="price">
-              <span className="currency">R$</span>{p.price}<span className="period">{p.period}</span>
+              {p.price === 0 ? (
+                <span className="free-label">Grátis</span>
+              ) : (
+                <>
+                  <span className="currency">R$</span>{p.price}<span className="period">{p.period}</span>
+                </>
+              )}
             </div>
             <ul>
               {p.features.map((f, j) => <li key={j}>{f}</li>)}
@@ -124,7 +132,9 @@ export default function Pricing() {
                   <h3>Finalizar Assinatura</h3>
                   <div className="modal-plan">
                     <span className="modal-plan-name">{selectedPlan.name}</span>
-                    <span className="modal-plan-price">R$ {selectedPlan.price}{selectedPlan.period}</span>
+                    <span className="modal-plan-price">
+                      {selectedPlan.price === 0 ? 'Grátis' : `R$ ${selectedPlan.price}${selectedPlan.period}`}
+                    </span>
                   </div>
                 </div>
                 <form onSubmit={handleSubmit} className="checkout-form">
@@ -150,41 +160,45 @@ export default function Pricing() {
                       required
                     />
                   </div>
-                  <div className="form-group">
-                    <label><FaCreditCard /> Número do Cartão</label>
-                    <input
-                      type="text"
-                      name="card"
-                      placeholder="0000 0000 0000 0000"
-                      value={form.card}
-                      onChange={handleChange}
-                      required
-                    />
-                  </div>
-                  <div className="form-row">
-                    <div className="form-group">
-                      <label><FaCreditCard /> Validade</label>
-                      <input
-                        type="text"
-                        name="expiry"
-                        placeholder="MM/AA"
-                        value={form.expiry}
-                        onChange={handleChange}
-                        required
-                      />
-                    </div>
-                    <div className="form-group">
-                      <label><FaLock /> CVV</label>
-                      <input
-                        type="text"
-                        name="cvv"
-                        placeholder="123"
-                        value={form.cvv}
-                        onChange={handleChange}
-                        required
-                      />
-                    </div>
-                  </div>
+                  {!isFree && (
+                    <>
+                      <div className="form-group">
+                        <label><FaCreditCard /> Número do Cartão</label>
+                        <input
+                          type="text"
+                          name="card"
+                          placeholder="0000 0000 0000 0000"
+                          value={form.card}
+                          onChange={handleChange}
+                          required
+                        />
+                      </div>
+                      <div className="form-row">
+                        <div className="form-group">
+                          <label><FaCreditCard /> Validade</label>
+                          <input
+                            type="text"
+                            name="expiry"
+                            placeholder="MM/AA"
+                            value={form.expiry}
+                            onChange={handleChange}
+                            required
+                          />
+                        </div>
+                        <div className="form-group">
+                          <label><FaLock /> CVV</label>
+                          <input
+                            type="text"
+                            name="cvv"
+                            placeholder="123"
+                            value={form.cvv}
+                            onChange={handleChange}
+                            required
+                          />
+                        </div>
+                      </div>
+                    </>
+                  )}
                   {error && <p className="form-error">{error}</p>}
                   <button
                     type="submit"
@@ -194,7 +208,9 @@ export default function Pricing() {
                     {loading ? (
                       <span className="spinner"></span>
                     ) : (
-                      `Confirmar Pagamento - R$ ${selectedPlan.price}${selectedPlan.period}`
+                      isFree
+                        ? 'Confirmar Assinatura Gratuita'
+                        : `Confirmar Pagamento - R$ ${selectedPlan.price}${selectedPlan.period}`
                     )}
                   </button>
                   <p className="checkout-secure">

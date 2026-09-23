@@ -2,49 +2,49 @@
   "users": [
     {
       "id": 1,
-      "name": "Rafael Oliveira",
+      "name": "felipete",
       "email": "ro708525@gmail.com",
-      "created_at": "2026-09-09T19:04:34.155Z"
+      "created_at": "2026-10-28T14:02:43.705Z"
     }
   ],
   "plans": [
     {
       "id": 1,
-      "name": "Essencial",
-      "price": 29.9,
-      "period": "/mês",
-      "description": "Monitoramento básico para sua casa",
-      "features": "8 sensores de porta,Notificações em tempo real,Painel de controle",
-      "created_at": "2026-09-09T17:49:59.641Z"
+      "name": "Guardian Basic",
+      "price": 0,
+      "period": "",
+      "description": "Proteção essencial para começar",
+      "features": "Monitoramento em tempo real,Alertas push,Histórico de 24h",
+      "created_at": "2026-10-28T13:59:31.668Z"
     },
     {
       "id": 2,
-      "name": "Profissional",
+      "name": "Guardian Plus",
       "price": 59.9,
       "period": "/mês",
-      "description": "Proteção completa com câmeras e alertas",
-      "features": "Tudo do Essencial,Câmeras de segurança,Detecção de movimento,Histórico de eventos",
-      "created_at": "2026-09-09T17:49:59.642Z"
+      "description": "Mais inteligência e autonomia para sua casa",
+      "features": "Histórico de 30 dias,Relatórios em PDF,Integração com Alexa/Google Home,Automação que espanta invasores",
+      "created_at": "2026-10-28T13:59:31.669Z"
     },
     {
       "id": 3,
-      "name": "Premium",
+      "name": "Guardian Max",
       "price": 99.9,
       "period": "/mês",
-      "description": "Monitoramento 24/7 com suporte prioritário",
-      "features": "Tudo do Profissional,Monitoramento 24/7,Suporte prioritário,Instalação inclusa",
-      "created_at": "2026-09-09T17:49:59.642Z"
+      "description": "Proteção avançada",
+      "features": "Ligações e SMS de emergência (até 3 contatos mesmo no modo Não Perturbe),Vizinho Protetor: alerta um vizinho de confiança sem resposta em 3 min,Histórico vitalício",
+      "created_at": "2026-10-28T13:59:31.669Z"
     }
   ],
   "purchases": [
     {
       "id": 1,
       "user_id": 1,
-      "plan_id": 2,
-      "amount": 59.9,
+      "plan_id": 1,
+      "amount": 0,
       "status": "paid",
       "payment_method": "credit_card",
-      "created_at": "2026-09-09T19:04:34.158Z"
+      "created_at": "2026-10-28T14:02:43.706Z"
     },
     {
       "id": 2,
@@ -53,37 +53,10 @@
       "amount": 59.9,
       "status": "paid",
       "payment_method": "credit_card",
-      "created_at": "2026-09-09T19:32:02.938Z"
-    },
-    {
-      "id": 3,
-      "user_id": 1,
-      "plan_id": 2,
-      "amount": 59.9,
-      "status": "paid",
-      "payment_method": "credit_card",
-      "created_at": "2026-09-09T19:36:38.017Z"
-    },
-    {
-      "id": 4,
-      "user_id": 1,
-      "plan_id": 2,
-      "amount": 59.9,
-      "status": "paid",
-      "payment_method": "credit_card",
-      "created_at": "2026-09-09T19:39:51.636Z"
-    },
-    {
-      "id": 5,
-      "user_id": 1,
-      "plan_id": 2,
-      "amount": 59.9,
-      "status": "paid",
-      "payment_method": "credit_card",
-      "created_at": "2026-09-09T19:43:58.048Z"
+      "created_at": "2026-10-28T19:56:15.239Z"
     }
   ],
   "nextUserId": 2,
   "nextPlanId": 4,
-  "nextPurchaseId": 6
+  "nextPurchaseId": 3
 }
