@@ -21,7 +21,7 @@ export default function Footer() {
             <h4>Empresa</h4>
             <a href="#">Sobre Nós</a>
             <a href="#">Blog</a>
-            <a href="#">Carreiras</a>
+            <a href="#"></a>
             <a href="#">Contato</a>
           </div>
           <div className="footer-col">
