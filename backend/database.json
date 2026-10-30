@@ -54,9 +54,18 @@
       "status": "paid",
       "payment_method": "credit_card",
       "created_at": "2026-10-28T19:56:15.239Z"
+    },
+    {
+      "id": 3,
+      "user_id": 1,
+      "plan_id": 2,
+      "amount": 59.9,
+      "status": "paid",
+      "payment_method": "credit_card",
+      "created_at": "2026-10-30T17:25:32.739Z"
     }
   ],
   "nextUserId": 2,
   "nextPlanId": 4,
-  "nextPurchaseId": 3
+  "nextPurchaseId": 4
 }
