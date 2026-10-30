@@ -10,7 +10,7 @@ export default function Pricing() {
   const [error, setError] = useState('')
 
   useEffect(() => {
-    fetch('http://localhost:3001/api/plans')
+    fetch('/api/plans')
       .then(res => res.json())
       .then(data => {
         const formatted = data.map(p => ({
@@ -62,7 +62,10 @@ export default function Pricing() {
     setError('')
 
     try {
-      const response = await fetch('http://localhost:3001/api/purchases', {
+      // const response = await fetch('http://localhost:3001/api/purchases', {
+        // method: 'POST',
+        // headers: { 'Content-Type': 'application/json' },
+        const response = await fetch('/api/purchases', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
