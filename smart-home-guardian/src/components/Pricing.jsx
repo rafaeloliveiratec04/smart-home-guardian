@@ -1,13 +1,14 @@
 import { useState, useEffect } from 'react'
-import { FaCheckCircle, FaTimes, FaCreditCard, FaUser, FaEnvelope, FaLock } from 'react-icons/fa'
+import { FaCheckCircle, FaTimes, FaUser, FaEnvelope, FaLock } from 'react-icons/fa'
 
 export default function Pricing() {
   const [plans, setPlans] = useState([])
   const [selectedPlan, setSelectedPlan] = useState(null)
-  const [form, setForm] = useState({ name: '', email: '', card: '', expiry: '', cvv: '' })
+  const [form, setForm] = useState({ name: '', email: '' })
   const [step, setStep] = useState('form')
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
+  const [emailSent, setEmailSent] = useState(false)
 
   useEffect(() => {
     fetch('/api/plans')
@@ -35,7 +36,8 @@ export default function Pricing() {
     setSelectedPlan(plan)
     setStep('form')
     setError('')
-    setForm({ name: '', email: '', card: '', expiry: '', cvv: '' })
+    setForm({ name: '', email: '' })
+    setEmailSent(false)
   }
 
   const handleClose = () => {
@@ -43,16 +45,7 @@ export default function Pricing() {
   }
 
   const handleChange = (e) => {
-    let { name, value } = e.target
-    if (name === 'card') {
-      value = value.replace(/\D/g, '').replace(/(.{4})/g, '$1 ').trim().slice(0, 19)
-    }
-    if (name === 'expiry') {
-      value = value.replace(/\D/g, '').replace(/(.{2})(.)/, '$1/$2').slice(0, 5)
-    }
-    if (name === 'cvv') {
-      value = value.replace(/\D/g, '').slice(0, 4)
-    }
+    const { name, value } = e.target
     setForm({ ...form, [name]: value })
   }
 
@@ -62,17 +55,13 @@ export default function Pricing() {
     setError('')
 
     try {
-      // const response = await fetch('http://localhost:3001/api/purchases', {
-        // method: 'POST',
-        // headers: { 'Content-Type': 'application/json' },
-        const response = await fetch('/api/purchases', {
+      const response = await fetch('/api/purchases', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           name: form.name,
           email: form.email,
           planId: selectedPlan.id,
-          paymentMethod: 'credit_card',
         }),
       })
 
@@ -82,6 +71,7 @@ export default function Pricing() {
         throw new Error(data.error || 'Erro ao processar compra')
       }
 
+      setEmailSent(data.emailSent === true)
       setLoading(false)
       setStep('success')
     } catch (err) {
@@ -91,7 +81,7 @@ export default function Pricing() {
   }
 
   const isFree = selectedPlan && selectedPlan.price === 0
-  const isValid = form.name.trim() && form.email.trim() && (isFree || (form.card.length >= 16 && form.expiry.length === 5 && form.cvv.length >= 3))
+  const isValid = form.name.trim() && form.email.trim()
 
   return (
     <section className="pricing" id="pricing">
@@ -101,8 +91,8 @@ export default function Pricing() {
         <p>Flexibilidade para qualquer tamanho de residência. Comece grátis e faça upgrade quando precisar.</p>
       </div>
       <div className="pricing-grid">
-        {plans.map((p, i) => (
-          <div className={`price-card ${p.featured ? 'featured' : ''} fade-up visible`} key={i}>
+        {plans.map((p) => (
+          <div className={`price-card ${p.featured ? 'featured' : ''} fade-up visible`} key={p.id}>
             {p.featured && <div className="popular-badge">MAIS POPULAR</div>}
             <h3>{p.name}</h3>
             <p className="desc">{p.desc}</p>
@@ -163,45 +153,6 @@ export default function Pricing() {
                       required
                     />
                   </div>
-                  {!isFree && (
-                    <>
-                      <div className="form-group">
-                        <label><FaCreditCard /> Número do Cartão</label>
-                        <input
-                          type="text"
-                          name="card"
-                          placeholder="0000 0000 0000 0000"
-                          value={form.card}
-                          onChange={handleChange}
-                          required
-                        />
-                      </div>
-                      <div className="form-row">
-                        <div className="form-group">
-                          <label><FaCreditCard /> Validade</label>
-                          <input
-                            type="text"
-                            name="expiry"
-                            placeholder="MM/AA"
-                            value={form.expiry}
-                            onChange={handleChange}
-                            required
-                          />
-                        </div>
-                        <div className="form-group">
-                          <label><FaLock /> CVV</label>
-                          <input
-                            type="text"
-                            name="cvv"
-                            placeholder="123"
-                            value={form.cvv}
-                            onChange={handleChange}
-                            required
-                          />
-                        </div>
-                      </div>
-                    </>
-                  )}
                   {error && <p className="form-error">{error}</p>}
                   <button
                     type="submit"
@@ -212,8 +163,8 @@ export default function Pricing() {
                       <span className="spinner"></span>
                     ) : (
                       isFree
-                        ? 'Confirmar Assinatura Gratuita'
-                        : `Confirmar Pagamento - R$ ${selectedPlan.price}${selectedPlan.period}`
+                        ? 'Solicitar plano gratuito'
+                        : 'Solicitar plano (simulação)'
                     )}
                   </button>
                   <p className="checkout-secure">
@@ -231,10 +182,10 @@ export default function Pricing() {
                 <div className="success-icon">
                   <FaCheckCircle />
                 </div>
-                <h3>Assinatura Confirmada!</h3>
-                <p>Parabéns, <strong>{form.name.split(' ')[0]}</strong>!</p>
-                <p>Seu plano <strong>{selectedPlan.name}</strong> está ativo.</p>
-                <p className="success-detail">Um e-mail de confirmação foi enviado para <strong>{form.email}</strong></p>
+                <h3>Solicitação registrada</h3>
+                <p>Obrigado, <strong>{form.name.split(' ')[0]}</strong>.</p>
+                <p>O plano <strong>{selectedPlan.name}</strong> foi solicitado em modo demonstração. Nenhum pagamento foi processado.</p>
+                <p className="success-detail">{emailSent ? `Enviamos a confirmação para ${form.email}.` : "A solicitação foi registrada, mas o e-mail não foi enviado. Verifique a configuração SMTP."}</p>
                 <button className="btn-primary" onClick={handleClose}>
                   Voltar ao Site
                 </button>

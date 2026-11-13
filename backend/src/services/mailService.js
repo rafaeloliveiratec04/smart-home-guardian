@@ -1,79 +1,100 @@
 import nodemailer from "nodemailer"
 
-let transporter = null
+let transporter
 
-function createTransporter() {
+function getTransporter() {
   if (transporter) return transporter
 
-  if (process.env.SMTP_HOST && process.env.SMTP_USER && process.env.SMTP_PASS) {
-    transporter = nodemailer.createTransport({
-      host: process.env.SMTP_HOST,
-      port: 465,
-      secure: true,
-      auth: {
-        user: process.env.SMTP_USER,
-        pass: process.env.SMTP_PASS,
-      },
-      tls: {
-        rejectUnauthorized: false,
-      },
-      connectionTimeout: 30000,
-      greetingTimeout: 15000,
-      socketTimeout: 30000,
-    })
-    console.log("📧 SMTP configurado:", process.env.SMTP_HOST, process.env.SMTP_USER)
-  } else {
-    console.log("📧 SMTP não configurado — modo teste (Ethereal)")
+  const { SMTP_HOST, SMTP_USER, SMTP_PASS } = process.env
+  if (!SMTP_HOST || !SMTP_USER || !SMTP_PASS) {
+    throw new Error("SMTP não configurado. Defina SMTP_HOST, SMTP_USER e SMTP_PASS no backend/.env.")
   }
 
+  const port = Number(process.env.SMTP_PORT || 587)
+  transporter = nodemailer.createTransport({
+    host: SMTP_HOST,
+    port,
+    secure: port === 465,
+    auth: { user: SMTP_USER, pass: SMTP_PASS },
+    connectionTimeout: 30000,
+    greetingTimeout: 15000,
+    socketTimeout: 30000,
+  })
+
+  console.log("SMTP configurado para", SMTP_HOST)
   return transporter
 }
-export async function sendPurchaseConfirmation({ to, name, planName, amount, purchaseId }) {
-  const transport = createTransporter()
-  const fromEmail = process.env.FROM_EMAIL || "no-reply@smarthomeguardian.com"
 
+const escapeHtml = (value) => String(value).replace(/[&<>"']/g, (char) => ({
+  "&": "&amp;",
+  "<": "&lt;",
+  ">": "&gt;",
+  '"': "&quot;",
+  "'": "&#39;",
+}[char]))
+
+const formatAmount = (amount) => Number(amount).toFixed(2).replace(".", ",")
+const fromAddress = () => process.env.FROM_EMAIL || process.env.SMTP_USER
+
+export async function sendPurchaseConfirmation({ to, name, planName, amount, purchaseId }) {
+  const safeName = escapeHtml(name)
+  const safePlanName = escapeHtml(planName)
   const html = `
-    <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
+    <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; color: #172536;">
       <div style="background: #0f172a; padding: 30px; border-radius: 10px 10px 0 0;">
         <h1 style="color: #fff; margin: 0;">Smart Home Guardian</h1>
-        <p style="color: #94a3b8; margin: 5px 0 0;">Confirmação de Compra</p>
+        <p style="color: #94a3b8; margin: 5px 0 0;">Confirmação da solicitação</p>
       </div>
       <div style="background: #f8fafc; padding: 30px; border-radius: 0 0 10px 10px;">
-        <h2>Olá, ${name}! 👋</h2>
-        <p>Sua compra foi aprovada com sucesso! Aqui estão os detalhes:</p>
+        <h2>Olá, ${safeName}!</h2>
+        <p>Registramos sua solicitação para o plano ${safePlanName}.</p>
         <table style="width: 100%; border-collapse: collapse; margin: 20px 0;">
-          <tr>
-            <td style="padding: 10px; border-bottom: 1px solid #e2e8f0;"><strong>Plano:</strong></td>
-            <td style="padding: 10px; border-bottom: 1px solid #e2e8f0;">${planName}</td>
-          </tr>
-          <tr>
-            <td style="padding: 10px; border-bottom: 1px solid #e2e8f0;"><strong>Valor:</strong></td>
-            <td style="padding: 10px; border-bottom: 1px solid #e2e8f0;">R$ ${amount.toFixed(2).replace(".", ",")}</td>
-          </tr>
-          <tr>
-            <td style="padding: 10px; border-bottom: 1px solid #e2e8f0;"><strong>Pedido:</strong></td>
-            <td style="padding: 10px; border-bottom: 1px solid #e2e8f0;">#${purchaseId}</td>
-          </tr>
-          <tr>
-            <td style="padding: 10px;"><strong>Status:</strong></td>
-            <td style="padding: 10px; color: #16a34a;">✓ Pagamento confirmado</td>
-          </tr>
+          <tr><td style="padding: 10px; border-bottom: 1px solid #e2e8f0;"><strong>Plano:</strong></td><td style="padding: 10px; border-bottom: 1px solid #e2e8f0;">${safePlanName}</td></tr>
+          <tr><td style="padding: 10px; border-bottom: 1px solid #e2e8f0;"><strong>Valor informado:</strong></td><td style="padding: 10px; border-bottom: 1px solid #e2e8f0;">R$ ${formatAmount(amount)}</td></tr>
+          <tr><td style="padding: 10px; border-bottom: 1px solid #e2e8f0;"><strong>Solicitação:</strong></td><td style="padding: 10px; border-bottom: 1px solid #e2e8f0;">#${purchaseId}</td></tr>
+          <tr><td style="padding: 10px;"><strong>Status:</strong></td><td style="padding: 10px; color: #b45309;">Demonstração — nenhum pagamento foi processado</td></tr>
         </table>
-        <p>Sua casa agora está protegida com o Smart Home Guardian! 🏠</p>
-        <hr style="border: none; border-top: 1px solid #e2e8f0; margin: 30px 0;">
-        <p style="color: #64748b; font-size: 12px;">Este é um email automático, não responda.</p>
+        <p style="color: #64748b; font-size: 12px;">Este é um e-mail automático. Não responda.</p>
       </div>
     </div>
   `
 
-  const info = await transport.sendMail({
-    from: `"Smart Home Guardian" <${fromEmail}>`,
+  return getTransporter().sendMail({
+    from: `"Smart Home Guardian" <${fromAddress()}>`,
     to,
-    subject: "✅ Compra Confirmada — Smart Home Guardian",
+    subject: "Confirmação da solicitação — Smart Home Guardian",
     html,
   })
+}
 
-  console.log("✅ Email enviado para:", to, "| ID:", info.messageId)
+export async function sendKitConfirmation({ to, name, amount, purchaseId, shippingAddress }) {
+  const safeName = escapeHtml(name)
+  const safeAddress = escapeHtml(shippingAddress)
+  const html = `
+    <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; color: #172536;">
+      <div style="background: #0f172a; padding: 30px; border-radius: 10px 10px 0 0;">
+        <h1 style="color: #fff; margin: 0;">Smart Home Guardian</h1>
+        <p style="color: #94a3b8; margin: 5px 0 0;">Confirmação da reserva</p>
+      </div>
+      <div style="background: #f8fafc; padding: 30px; border-radius: 0 0 10px 10px;">
+        <h2>Olá, ${safeName}!</h2>
+        <p>Recebemos sua reserva demonstrativa do Kit Guardian Start. Confira os dados:</p>
+        <table style="width: 100%; border-collapse: collapse; margin: 20px 0;">
+          <tr><td style="padding: 10px; border-bottom: 1px solid #e2e8f0;"><strong>Pedido:</strong></td><td style="padding: 10px; border-bottom: 1px solid #e2e8f0;">#${purchaseId}</td></tr>
+          <tr><td style="padding: 10px; border-bottom: 1px solid #e2e8f0;"><strong>Kit:</strong></td><td style="padding: 10px; border-bottom: 1px solid #e2e8f0;">Kit Guardian Start</td></tr>
+          <tr><td style="padding: 10px; border-bottom: 1px solid #e2e8f0;"><strong>Valor informado, com frete:</strong></td><td style="padding: 10px; border-bottom: 1px solid #e2e8f0;">R$ ${formatAmount(amount)}</td></tr>
+          <tr><td style="padding: 10px; vertical-align: top;"><strong>Endereço informado:</strong></td><td style="padding: 10px;">${safeAddress}</td></tr>
+        </table>
+        <p>Demonstração — nenhum pagamento ou envio foi processado.</p>
+        <p style="color: #64748b; font-size: 12px;">Este é um e-mail automático. Não responda.</p>
+      </div>
+    </div>
+  `
 
-  return info
+  return getTransporter().sendMail({
+    from: `"Smart Home Guardian" <${fromAddress()}>`,
+    to,
+    subject: "Confirmação da reserva — Smart Home Guardian",
+    html,
+  })
 }

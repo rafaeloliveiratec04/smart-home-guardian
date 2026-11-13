@@ -1,33 +1,33 @@
 # Smart Home Guardian
 
-Sistema de monitoramento residencial inteligente com alertas em tempo real de portas, movimento, fumaça e incêndio. Desenvolvido como projeto acadêmico de Desenvolvimento de Sistemas.
+Site demonstrativo de um sistema de monitoramento residencial. O projeto contém uma interface React/Vite e uma API Express que registra solicitações e envia confirmações por e-mail.
 
-## Funcionalidades
+## Requisitos
 
-- **Monitoramento de portas e janelas** — sensores que detectam aberturas e fechamentos em tempo real
-- **Detecção de movimento** — sensores de presença com tecnologia infravermelha
-- **Detector de fumaça** — monitoramento contínuo de níveis de fumaça no ar
-- **Alerta de incêndio** — sensor de temperatura que identifica aumentos anormais
-- **Notificações instantâneas** — alertas em tempo real no celular, tablet ou computador
-- **Dashboard interativo** — painel com log de eventos dinâmico que se atualiza automaticamente
-- **Relatórios e histórico** — acompanhamento completo de eventos e padrões de segurança
+- Node.js e npm
+- Credenciais SMTP para enviar e-mails reais
 
-## Tecnologias utilizadas
+## Executar
 
-- **React** — biblioteca JavaScript para construção de interfaces
-- **Vite** — ferramenta de build e servidor de desenvolvimento
-- **CSS3** — estilização com variáveis CSS, animações, grid e flexbox
-- **JavaScript (ES6+)** — lógica de componentes e estado
+Na pasta `smart-home-guardian`, instale as dependências e inicie o site:
 
-## Como rodar o projeto
 ```bash
-# Instalar dependências
 npm install
-
-# Rodar o servidor de desenvolvimento
 npm run dev
+```
 
+Em outro terminal, na pasta `backend`, instale as dependências e inicie a API:
 
-## Autor
+```bash
+npm install
+npm run dev
+```
 
-Rafael — Projeto acadêmico de Desenvolvimento de Sistemas
+Copie `backend/.env.example` para `backend/.env` e configure as variáveis SMTP antes de enviar e-mails. O arquivo `.env` contém credenciais locais e não deve ser versionado.
+
+## Comandos do site
+
+- `npm run build` — gera a versão de produção em `dist/`
+- `npm run lint` — verifica o código do site
+
+Os formulários de Planos e Kits são demonstrações: registram solicitações e podem enviar e-mail, mas não processam pagamentos nem realizam envios de produtos.

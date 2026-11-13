@@ -1,0 +1,11 @@
+{
+  "name": "smart-home-guardian-workspace",
+  "private": true,
+  "scripts": {
+    "install:all": "npm --prefix smart-home-guardian install && npm --prefix backend install",
+    "dev": "npm --prefix smart-home-guardian run dev",
+    "build": "npm --prefix smart-home-guardian run build",
+    "lint": "npm --prefix smart-home-guardian run lint",
+    "backend:dev": "npm --prefix backend run dev"
+  }
+}
