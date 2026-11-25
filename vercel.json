@@ -1,0 +1,6 @@
+{
+  "installCommand": "npm install --prefix smart-home-guardian --include=dev",
+  "buildCommand": "npm run build --prefix smart-home-guardian",
+  "outputDirectory": "smart-home-guardian/dist",
+  "rewrites": [{ "source": "/(.*)", "destination": "/index.html" }]
+}
